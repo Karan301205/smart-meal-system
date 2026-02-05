@@ -12,13 +12,14 @@ app.use(cors());
 
 // Connect Database
 connectDB();
+
 // Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/menu', require('./routes/menuRoutes')); // <--- Add this line
-// Test Route
+app.use('/api/menu', require('./routes/menuRoutes'));
+app.use('/api/qr', require('./routes/qrRoutes')); // <--- YOU WERE MISSING THIS LINE!
 
+// Test Route
 app.get('/', (req, res) => res.send('API is running'));
 
 const PORT = process.env.PORT || 5000;
-// app.use('/api/auth', require('./routes/authRoutes'));
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
