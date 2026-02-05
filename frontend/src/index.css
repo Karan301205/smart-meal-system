@@ -1,0 +1,37 @@
+/* Import Luxury Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+  --bg-dark: #0f0f0f;       /* Deep Black background */
+  --card-dark: #1a1a1a;     /* Dark Grey for cards */
+  --primary-red: #e50914;   /* The "Huff & Puff" Red */
+  --text-white: #ffffff;
+  --text-gray: #a3a3a3;
+  --shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-white);
+  font-family: 'Poppins', sans-serif; /* Clean body text */
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif; /* Elegant headings */
+  font-weight: 700;
+}
+
+button {
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+button:active {
+  transform: scale(0.98);
+}
