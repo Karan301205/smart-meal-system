@@ -30,8 +30,15 @@ exports.generateQR = async (req, res) => {
 
 // @desc    Validate Scanned QR
 // @route   POST /api/qr/validate
+// @desc    Validate Scanned QR (Staff Only)
+// @route   POST /api/qr/validate
 exports.validateQR = async (req, res) => {
     const { qrToken } = req.body;
+
+    // 1. Check if the logged-in user is Staff or Admin
+    if (req.user.role !== 'staff' && req.user.role !== 'admin') {
+        return res.status(403).json({ msg: "Access Denied: Staff Only" });
+    }
 
     if (!qrToken) return res.status(400).json({ msg: "No QR token provided" });
 
