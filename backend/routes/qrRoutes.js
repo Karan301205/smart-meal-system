@@ -2,23 +2,20 @@ const express = require('express');
 const router = express.Router();
 
 // Import the controller functions
-// If this path is wrong or the file has a typo, it crashes
+// We need 'getQRInfo' to show the student details BEFORE confirming
 const qrController = require('../controllers/qrController'); 
-
-// Destructure them safely
-const { generateQR, validateQR } = qrController;
+const { generateQR, validateQR, getQRInfo } = qrController; 
 
 const { protect } = require('../middlewares/authMiddleware');
 
-// Debugging check: If these are undefined, we know the issue is the controller file
-if (!generateQR || !validateQR) {
-    console.error("❌ ERROR: QR Controller functions not found. Check 'qrController.js' exports!");
-}
-
-// Student generates QR
+// 1. Student generates QR (GET)
 router.get('/generate', protect, generateQR);
 
-// Staff scans QR
+// 2. Staff peeks at Student Info (POST)
+// This is the missing link! 
+router.post('/scan-info', protect, getQRInfo); 
+
+// 3. Staff confirms & serves meal (POST)
 router.post('/validate', protect, validateQR);
 
 module.exports = router;

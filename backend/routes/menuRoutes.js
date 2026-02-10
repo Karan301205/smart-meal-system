@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { getMenu, addMenu } = require('../controllers/menuController');
-const { protect, admin } = require('../middlewares/authMiddleware');
+const { protect, adminOnly } = require('../middlewares/authMiddleware');
 
-// Anyone can see the menu
+// Get Menu (Public - Students can see it)
 router.get('/', getMenu);
 
-// Only Admin can add menu
-router.post('/', protect, admin, addMenu);
+// Add Menu (Protected - Only Admin can add food)
+// The error was likely here because 'adminOnly' wasn't imported before
+router.post('/', protect, adminOnly, addMenu);
 
 module.exports = router;

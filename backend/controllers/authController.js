@@ -1,97 +1,78 @@
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
+
+const generateToken = (id, role) => {
+    return jwt.sign({ userId: id, role }, process.env.JWT_SECRET || 'secret123', { expiresIn: '7d' });
+};
+
+
 exports.register = async (req, res) => {
-    const { name, email, password, role, rollNumber } = req.body;
+    const { name, email, password, role, rollNumber, mealsLeft } = req.body;
 
     try {
-        // 1. Check if user exists
         let user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ msg: 'User already exists' });
-        }
+        if (user) return res.status(400).json({ msg: 'User already exists' });
 
-        // 2. Create new user instance
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // If role is guest, use the provided mealsLeft (e.g., 5 meals). Otherwise null (unlimited).
+        const guestLimit = role === 'guest' ? (mealsLeft || 1) : null;
+
         user = new User({
             name,
             email,
-            password,
+            password: hashedPassword,
             role,
-            rollNumber
+            rollNumber,
+            mealsLeft: guestLimit
         });
 
-        // 3. Hash the password (encrypt it)
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
-
-        // 4. Save to Database
         await user.save();
-
-        // 5. Return a Token (JWT) so they are logged in immediately
-        const payload = {
-            user: {
-                id: user.id,
-                role: user.role
-            }
-        };
-
-        jwt.sign(
-            payload,
-            process.env.JWT_SECRET || 'secret123', // Use env variable in production
-            { expiresIn: '5d' },
-            (err, token) => {
-                if (err) throw err;
-                res.json({ token });
-            }
-        );
+        res.status(201).json({ msg: 'User created successfully', user });
 
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        console.error(err);
+        res.status(500).json({ msg: 'Server Error' });
     }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
 exports.login = async (req, res) => {
     const { email, password } = req.body;
-
     try {
-        // 1. Check if user exists
-        let user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ msg: 'Invalid Credentials' });
-        }
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ msg: 'Invalid Credentials' });
 
-        // 2. Check password
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ msg: 'Invalid Credentials' });
-        }
+        if (!isMatch) return res.status(400).json({ msg: 'Invalid Credentials' });
 
-        // 3. Return Token
-        const payload = {
-            user: {
-                id: user.id,
-                role: user.role
-            }
-        };
-
-        jwt.sign(
-            payload,
-            process.env.JWT_SECRET || 'secret123',
-            { expiresIn: '5d' },
-            (err, token) => {
-                if (err) throw err;
-                res.json({ token });
-            }
-        );
-
+        const token = generateToken(user.id, user.role);
+        
+        res.json({ token, role: user.role, name: user.name });
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server Error' });
+    }
+};
+
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        // Return all users but hide their passwords
+        const users = await User.find().select('-password');
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ msg: 'Server Error' });
+    }
+};
+
+
+exports.deleteUser = async (req, res) => {
+    try {
+        await User.findByIdAndDelete(req.params.id);
+        res.json({ msg: 'User removed' });
+    } catch (err) {
+        res.status(500).json({ msg: 'Server Error' });
     }
 };

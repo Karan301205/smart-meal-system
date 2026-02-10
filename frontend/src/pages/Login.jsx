@@ -14,15 +14,30 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        
         try {
             const res = await axios.post('http://localhost:5001/api/auth/login', formData);
-            localStorage.setItem('token', res.data.token);
-            navigate('/dashboard');
+            
+            // 1. Save Token & Role
+            const { token, role } = res.data;
+            localStorage.setItem('token', token);
+            localStorage.setItem('role', role);
+
+            // 2. Auto-Redirect based on Role
+            if (role === 'admin') {
+                navigate('/admin');       // Admin -> Dashboard
+            } else if (role === 'staff') {
+                navigate('/scan');        // Staff -> Scanner
+            } else {
+                navigate('/dashboard');   // Students/Guests -> Menu
+            }
+
         } catch (err) {
             setError('Invalid Credentials');
+            console.error(err);
         }
     };
-
+    
     return (
         <div style={styles.container}>
             {/* Left Side: Text/Brand */}
@@ -96,7 +111,7 @@ const styles = {
         WebkitTextFillColor: 'transparent'
     },
     loginCard: {
-        backgroundColor: 'rgba(26, 26, 26, 0.8)', // Glassmorphism dark
+        backgroundColor: 'rgba(26, 26, 26, 0.8)',
         padding: '30px',
         borderRadius: '20px',
         backdropFilter: 'blur(10px)',
@@ -116,7 +131,7 @@ const styles = {
     },
     button: {
         padding: '15px',
-        borderRadius: '50px', // Pill shape
+        borderRadius: '50px', 
         border: 'none',
         backgroundColor: 'var(--primary-red)',
         color: 'white',
