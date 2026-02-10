@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600&display=swap');
 
 :root {
-  --bg-dark: #0f0f0f;       /* Deep Black background */
-  --card-dark: #1a1a1a;     /* Dark Grey for cards */
-  --primary-red: #e50914;   /* The "Huff & Puff" Red */
+  --bg-dark: #0f0f0f;       
+  --card-dark: #1a1a1a;     
+  --primary-red: #e50914;   
   --text-white: #ffffff;
   --text-gray: #a3a3a3;
   --shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -19,11 +19,11 @@
 body {
   background-color: var(--bg-dark);
   color: var(--text-white);
-  font-family: 'Poppins', sans-serif; /* Clean body text */
+  font-family: 'Poppins', sans-serif; 
 }
 
 h1, h2, h3 {
-  font-family: 'Playfair Display', serif; /* Elegant headings */
+  font-family: 'Playfair Display', serif; 
   font-weight: 700;
 }
 

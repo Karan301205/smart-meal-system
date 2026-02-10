@@ -6,13 +6,12 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true },
     role: { 
         type: String, 
-        enum: ['student', 'staff', 'admin', 'guest'], // Added 'guest' role
+        enum: ['student', 'staff', 'admin', 'guest'], 
         default: 'student' 
     },
-    rollNumber: { type: String }, // Optional for guests
+    rollNumber: { type: String }, 
     
-    // Guest Specific Fields
-    mealsLeft: { type: Number, default: null } // null = unlimited (for regular students)
+    mealsLeft: { type: Number, default: null } 
 });
 
 module.exports = mongoose.model('User', UserSchema);

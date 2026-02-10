@@ -1,11 +1,8 @@
 const Menu = require('../models/Menu');
 
-// @desc    Get Today's Menu
-// @route   GET /api/menu
-// @access  Public (Students & Staff)
+
 exports.getMenu = async (req, res) => {
     try {
-        // Find menu for today
         const today = new Date();
         today.setHours(0,0,0,0);
         
@@ -18,9 +15,7 @@ exports.getMenu = async (req, res) => {
     }
 };
 
-// @desc    Add Menu Item
-// @route   POST /api/menu
-// @access  Admin Only
+
 exports.addMenu = async (req, res) => {
     const { category, items } = req.body;
     try {

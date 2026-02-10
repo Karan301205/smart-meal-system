@@ -7,7 +7,7 @@ const MenuSchema = new mongoose.Schema({
         required: true
     },
     items: {
-        type: [String], // Array of strings e.g. ["Paneer", "Roti", "Rice"]
+        type: [String],
         required: true
     },
     date: {

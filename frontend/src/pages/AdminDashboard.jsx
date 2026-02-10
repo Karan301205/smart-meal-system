@@ -10,11 +10,11 @@ const AdminDashboard = () => {
         name: '', email: '', password: '', role: 'student', mealsLeft: ''
     });
 
-    // 1. Fetch All Users on Load
+    
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('http://localhost:5001/api/auth/users', {
+            const res = await axios.get('https://smart-meal-system.onrender.com/api/auth/users', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUsers(res.data);
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:5001/api/auth/register', formData, {
+            await axios.post('https://smart-meal-system.onrender.com/api/auth/register', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             alert("User Added Successfully!");
@@ -47,7 +47,7 @@ const AdminDashboard = () => {
         if(!window.confirm("Are you sure?")) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5001/api/auth/users/${id}`, {
+            await axios.delete(`https://smart-meal-system.onrender.com/api/auth/users/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchUsers();

@@ -13,7 +13,7 @@ const Dashboard = () => {
         // Fetch Menu logic... (Keep existing code)
         const fetchMenu = async () => {
             try {
-                const res = await axios.get('http://localhost:5001/api/menu');
+                const res = await axios.get('https://smart-meal-system.onrender.com/api/menu');
                 setMenu(res.data);
             } catch (err) { console.error(err); }
         };
@@ -34,7 +34,7 @@ const Dashboard = () => {
     const generateQR = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('http://localhost:5001/api/qr/generate', {
+            const res = await axios.get('https://smart-meal-system.onrender.com/api/qr/generate', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setQrCode(res.data.qrData);

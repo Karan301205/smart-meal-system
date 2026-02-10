@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // If role is guest, use the provided mealsLeft (e.g., 5 meals). Otherwise null (unlimited).
+   
         const guestLimit = role === 'guest' ? (mealsLeft || 1) : null;
 
         user = new User({
@@ -59,7 +59,6 @@ exports.login = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
     try {
-        // Return all users but hide their passwords
         const users = await User.find().select('-password');
         res.json(users);
     } catch (err) {
@@ -68,11 +67,29 @@ exports.getAllUsers = async (req, res) => {
 };
 
 
+// @desc    Delete User
+// @route   DELETE /api/auth/users/:id
 exports.deleteUser = async (req, res) => {
     try {
-        await User.findByIdAndDelete(req.params.id);
+        // 1. Find the user first
+        const user = await User.findById(req.params.id);
+        
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // 2. THE SHIELD: Check if this is the Super Admin
+        // You can hardcode the email you just created
+        if (user.email === 'admin@test.com') {
+            return res.status(403).json({ msg: '⛔ SUPER ADMIN CANNOT BE DELETED!' });
+        }
+
+        // 3. If safe, delete
+        await user.deleteOne(); // or User.findByIdAndDelete(req.params.id)
+        
         res.json({ msg: 'User removed' });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ msg: 'Server Error' });
     }
 };

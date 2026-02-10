@@ -6,19 +6,18 @@ const cors = require('cors');
 dotenv.config();
 const app = express();
 
-// Middleware
+
 app.use(express.json());
 app.use(cors());
 
-// Connect Database
+
 connectDB();
 
-// Define Routes
+
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/menu', require('./routes/menuRoutes'));
-app.use('/api/qr', require('./routes/qrRoutes')); // <--- YOU WERE MISSING THIS LINE!
+app.use('/api/qr', require('./routes/qrRoutes')); 
 
-// Test Route
 app.get('/', (req, res) => res.send('API is running'));
 
 const PORT = process.env.PORT || 5000;

@@ -16,7 +16,7 @@ const Login = () => {
         setError('');
         
         try {
-            const res = await axios.post('http://localhost:5001/api/auth/login', formData);
+            const res = await axios.post('https://smart-meal-system.onrender.com/api/auth/login', formData);
             
             // 1. Save Token & Role
             const { token, role } = res.data;
@@ -37,7 +37,7 @@ const Login = () => {
             console.error(err);
         }
     };
-    
+
     return (
         <div style={styles.container}>
             {/* Left Side: Text/Brand */}

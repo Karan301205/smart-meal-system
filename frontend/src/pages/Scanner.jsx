@@ -30,7 +30,7 @@ const ScannerPage = () => {
         try {
             const token = localStorage.getItem('token');
             // Call the new "Peek" endpoint
-            const res = await axios.post('http://localhost:5001/api/qr/scan-info', 
+            const res = await axios.post('https://smart-meal-system.onrender.com/api/qr/scan-info', 
                 { qrToken: rawValue },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -53,7 +53,7 @@ const ScannerPage = () => {
     const confirmMeal = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.post('http://localhost:5001/api/qr/validate', 
+            const res = await axios.post('https://smart-meal-system.onrender.com/api/qr/validate', 
                 { qrToken: scannedUser.token },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

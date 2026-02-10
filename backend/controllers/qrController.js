@@ -2,11 +2,10 @@ const jwt = require('jsonwebtoken');
 const Transaction = require('../models/Transaction');
 const User = require('../models/User');
 
-// @desc    Generate QR Token
-// @route   GET /api/qr/generate
+
 exports.generateQR = async (req, res) => {
     try {
-        // FIX: Use 'userId' (not 'id') because that is how we named it in the auth token
+       
         const payload = { userId: req.user.userId, role: req.user.role };
         
         const qrToken = jwt.sign(payload, process.env.JWT_SECRET || 'secret123', { expiresIn: '60s' });
@@ -18,8 +17,7 @@ exports.generateQR = async (req, res) => {
     }
 };
 
-// @desc    Step 1: Get User Info (Peek)
-// @route   POST /api/qr/scan-info
+
 exports.getQRInfo = async (req, res) => {
     const { qrToken } = req.body;
     try {
@@ -40,8 +38,6 @@ exports.getQRInfo = async (req, res) => {
     }
 };
 
-// @desc    Step 2: Confirm & Serve Meal
-// @route   POST /api/qr/validate
 exports.validateQR = async (req, res) => {
     const { qrToken } = req.body;
 
@@ -56,14 +52,13 @@ exports.validateQR = async (req, res) => {
 
         if (!user) return res.status(404).json({ msg: "User not found" });
 
-        // Guest Logic
+      
         if (user.role === 'guest') {
             if (user.mealsLeft <= 0) return res.status(400).json({ msg: "❌ Guest Pass Expired" });
             user.mealsLeft -= 1;
             await user.save();
         }
 
-        // Duplicate Check
         const currentHour = new Date().getHours();
         let mealType = 'Dinner';
         if (currentHour >= 7 && currentHour < 11) mealType = 'Breakfast';

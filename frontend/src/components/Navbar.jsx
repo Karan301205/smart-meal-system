@@ -5,19 +5,16 @@ const Navbar = () => {
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
 
-    // Check if user is Admin on load
+    
     useEffect(() => {
-        // Ideally, we decode the token here. For now, we'll check localStorage if you saved role there
-        // Or we can just let the backend handle the redirect if they click it.
-        // Let's assume you fetch user profile or saved 'role' in localStorage during login
-        // *Quick Fix:* Update Login.jsx to localStorage.setItem('role', res.data.role);
+        
         const role = localStorage.getItem('role');
         if (role === 'admin') setIsAdmin(true);
     }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('role'); // Clear role too
+        localStorage.removeItem('role'); 
         navigate('/');
     };
 
