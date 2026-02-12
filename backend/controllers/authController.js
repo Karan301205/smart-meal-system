@@ -67,25 +67,19 @@ exports.getAllUsers = async (req, res) => {
 };
 
 
-// @desc    Delete User
-// @route   DELETE /api/auth/users/:id
 exports.deleteUser = async (req, res) => {
     try {
-        // 1. Find the user first
         const user = await User.findById(req.params.id);
         
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
         }
 
-        // 2. THE SHIELD: Check if this is the Super Admin
-        // You can hardcode the email you just created
         if (user.email === 'admin@test.com') {
             return res.status(403).json({ msg: '⛔ SUPER ADMIN CANNOT BE DELETED!' });
         }
 
-        // 3. If safe, delete
-        await user.deleteOne(); // or User.findByIdAndDelete(req.params.id)
+        await user.deleteOne();
         
         res.json({ msg: 'User removed' });
     } catch (err) {
