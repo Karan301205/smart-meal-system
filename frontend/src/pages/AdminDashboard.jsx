@@ -10,7 +10,7 @@ const AdminDashboard = () => {
         name: '', email: '', password: '', role: 'student', mealsLeft: ''
     });
 
-    
+
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
 
     // 3. Handle Delete User
     const handleDelete = async (id) => {
-        if(!window.confirm("Are you sure?")) return;
+        if (!window.confirm("Are you sure?")) return;
         try {
             const token = localStorage.getItem('token');
             await axios.delete(`https://smart-meal-system.onrender.com/api/auth/users/${id}`, {
@@ -63,17 +63,20 @@ const AdminDashboard = () => {
     return (
         <div style={styles.container}>
             <Navbar />
+            <div style={{ backgroundColor: 'rgba(255, 77, 77, 0.1)', border: '1px solid #ff4d4d', color: '#ff4d4d', padding: '15px', borderRadius: '10px', textAlign: 'center', marginBottom: '20px', maxWidth: '1200px', margin: '0 auto 20px auto' }}>
+                <strong>⚠️ Warning:</strong> Do not delete any account.
+            </div>
             <div style={styles.content}>
-                
+
                 {/* LEFT: Add User Form */}
                 <div style={styles.formCard}>
-                    <h2 style={styles.header}>Add New <span style={{color:'var(--primary-red)'}}>User</span></h2>
+                    <h2 style={styles.header}>Add New <span style={{ color: 'var(--primary-red)' }}>User</span></h2>
                     <form onSubmit={handleRegister} style={styles.form}>
-                        <input style={styles.input} placeholder="Full Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />
-                        <input style={styles.input} placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} required />
-                        <input style={styles.input} type="password" placeholder="Password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} required />
-                        
-                        <select style={styles.select} value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}>
+                        <input style={styles.input} placeholder="Full Name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+                        <input style={styles.input} placeholder="Email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required />
+                        <input style={styles.input} type="password" placeholder="Password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} required />
+
+                        <select style={styles.select} value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}>
                             <option value="student">Student</option>
                             <option value="staff">Staff</option>
                             <option value="admin">Admin</option>
@@ -82,7 +85,7 @@ const AdminDashboard = () => {
 
                         {/* Show Meals Input ONLY for Guest */}
                         {formData.role === 'guest' && (
-                            <input style={styles.input} type="number" placeholder="Number of Meals" value={formData.mealsLeft} onChange={e => setFormData({...formData, mealsLeft: e.target.value})} required />
+                            <input style={styles.input} type="number" placeholder="Number of Meals" value={formData.mealsLeft} onChange={e => setFormData({ ...formData, mealsLeft: e.target.value })} required />
                         )}
 
                         <button style={styles.addBtn}>+ Create Account</button>
@@ -91,15 +94,15 @@ const AdminDashboard = () => {
 
                 {/* RIGHT: User Lists */}
                 <div style={styles.listSection}>
-                    
+
                     {/* Staff List */}
                     <div style={styles.listCard}>
                         <h3 style={styles.subHeader}>👨‍🍳 Staff & Admins</h3>
                         {staffMembers.map(user => (
                             <div key={user._id} style={styles.userRow}>
                                 <div>
-                                    <p style={{fontWeight:'bold'}}>{user.name}</p>
-                                    <p style={{fontSize:'0.8rem', color:'#888'}}>{user.role.toUpperCase()}</p>
+                                    <p style={{ fontWeight: 'bold' }}>{user.name}</p>
+                                    <p style={{ fontSize: '0.8rem', color: '#888' }}>{user.role.toUpperCase()}</p>
                                 </div>
                                 <button onClick={() => handleDelete(user._id)} style={styles.deleteBtn}>Remove</button>
                             </div>
@@ -112,8 +115,8 @@ const AdminDashboard = () => {
                         {students.map(user => (
                             <div key={user._id} style={styles.userRow}>
                                 <div>
-                                    <p style={{fontWeight:'bold'}}>{user.name}</p>
-                                    <p style={{fontSize:'0.8rem', color:'#888'}}>
+                                    <p style={{ fontWeight: 'bold' }}>{user.name}</p>
+                                    <p style={{ fontSize: '0.8rem', color: '#888' }}>
                                         {user.role === 'guest' ? `Guest (${user.mealsLeft} meals left)` : user.email}
                                     </p>
                                 </div>

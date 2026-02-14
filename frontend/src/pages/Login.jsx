@@ -14,10 +14,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        
+
         try {
             const res = await axios.post('https://smart-meal-system.onrender.com/api/auth/login', formData);
-            
+
             // 1. Save Token & Role
             const { token, role } = res.data;
             localStorage.setItem('token', token);
@@ -42,40 +42,48 @@ const Login = () => {
         <div style={styles.container}>
             {/* Left Side: Text/Brand */}
             <div style={styles.content}>
-                <h1 style={styles.brand}>Smart <span style={{color: 'var(--primary-red)'}}>Meal</span></h1>
-                <h2 style={styles.headline}>It’s not just Food, <br/> It’s an Experience.</h2>
-                
+                <h1 style={styles.brand}>Smart <span style={{ color: 'var(--primary-red)' }}>Meal</span></h1>
+                <h2 style={styles.headline}>It’s not just Food, <br /> It’s an Experience.</h2>
+
                 <div style={styles.loginCard}>
                     {error && <p style={styles.error}>{error}</p>}
-                    
+
+                    <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        <button type="button" onClick={() => setFormData({ email: 'admin@test.com', password: '123' })} style={styles.testBtn}>Super Admin</button>
+                        <button type="button" onClick={() => setFormData({ email: 'staff1@gmail.com', password: '123' })} style={styles.testBtn}>Staff</button>
+                        <button type="button" onClick={() => setFormData({ email: 'stud1@gmail.com', password: '123' })} style={styles.testBtn}>Student</button>
+                    </div>
+
                     <form onSubmit={handleSubmit} style={styles.form}>
                         <div style={styles.inputGroup}>
                             <label style={styles.label}>Email Address</label>
-                            <input 
-                                type="email" 
-                                name="email" 
-                                onChange={handleChange} 
-                                style={styles.input} 
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                style={styles.input}
                                 placeholder="student@college.edu"
-                                required 
+                                required
                             />
                         </div>
                         <div style={styles.inputGroup}>
                             <label style={styles.label}>Password</label>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                onChange={handleChange} 
-                                style={styles.input} 
+                            <input
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                style={styles.input}
                                 placeholder="••••••••"
-                                required 
+                                required
                             />
                         </div>
                         <button type="submit" style={styles.button}>Sign In</button>
                     </form>
                 </div>
             </div>
-            
+
             {/* Decorative Circle (Abstract Food Vibe) */}
             <div style={styles.circleDecoration}></div>
         </div>
@@ -131,7 +139,7 @@ const styles = {
     },
     button: {
         padding: '15px',
-        borderRadius: '50px', 
+        borderRadius: '50px',
         border: 'none',
         backgroundColor: 'var(--primary-red)',
         color: 'white',
@@ -141,6 +149,7 @@ const styles = {
         boxShadow: '0 4px 15px rgba(229, 9, 20, 0.4)'
     },
     error: { color: '#ff4d4d', fontSize: '0.9rem', marginBottom: '10px' },
+    testBtn: { padding: '8px 12px', borderRadius: '5px', border: '1px solid #444', backgroundColor: '#222', color: 'white', cursor: 'pointer', fontSize: '0.8rem', transition: 'background-color 0.2s' },
     circleDecoration: {
         position: 'absolute',
         top: '-10%',

@@ -48,14 +48,14 @@ const Dashboard = () => {
             <Navbar />
             <div style={styles.wrapper}>
                 <div style={styles.hero}>
-                    <h1>Today's <span style={{color: 'var(--primary-red)'}}>Menu</span></h1>
+                    <h1>Today's <span style={{ color: 'var(--primary-red)' }}>Menu</span></h1>
                     <button onClick={generateQR} style={styles.mainBtn}>Get Meal Pass 🎟️</button>
                 </div>
 
                 {/* Keep your existing Menu Grid code here... */}
                 <div style={styles.grid}>
-                     {/* ... (Keep your menu mapping code exactly as it was) ... */}
-                     {menu.map((m, index) => (
+                    {/* ... (Keep your menu mapping code exactly as it was) ... */}
+                    {menu.map((m, index) => (
                         <div key={index} style={styles.card}>
                             <h3 style={styles.cardTitle}>{m.category}</h3>
                             <p style={styles.cardDesc}>{m.items.join(', ')}</p>
@@ -68,15 +68,15 @@ const Dashboard = () => {
             {showQrModal && (
                 <div style={styles.modalOverlay}>
                     <div style={styles.modal}>
-                        <h2 style={{color: 'black', marginBottom:'10px'}}>Scan Now</h2>
+                        <h2 style={{ color: 'black', marginBottom: '10px' }}>Scan Now</h2>
                         <QRCode value={qrCode} size={200} />
-                        
+
                         {/* THE TIMER */}
                         <div style={styles.timerBox}>
-                            <p style={{fontSize:'2rem', fontWeight:'bold', color: timeLeft < 10 ? 'red' : 'green'}}>
+                            <p style={{ fontSize: '2rem', fontWeight: 'bold', color: timeLeft < 10 ? 'red' : 'green' }}>
                                 00:{timeLeft < 10 ? `0${timeLeft}` : timeLeft}
                             </p>
-                            <p style={{fontSize:'0.8rem', color:'#666'}}>Valid for 1 min</p>
+                            <p style={{ fontSize: '0.8rem', color: '#666' }}>Valid for 1 min</p>
                         </div>
 
                         <button onClick={() => setShowQrModal(false)} style={styles.closeBtn}>Close</button>
@@ -97,7 +97,7 @@ const styles = {
     card: { backgroundColor: 'var(--card-dark)', borderRadius: '30px', padding: '30px', textAlign: 'center', border: '1px solid #333' },
     cardTitle: { fontSize: '1.4rem', marginBottom: '10px', color: 'white' },
     cardDesc: { color: '#a3a3a3' },
-    
+
     // Timer Styles
     modalOverlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
     modal: { backgroundColor: 'white', padding: '40px', borderRadius: '20px', textAlign: 'center', width: '90%', maxWidth: '350px' },

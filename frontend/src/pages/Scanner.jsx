@@ -21,16 +21,16 @@ const ScannerPage = () => {
     // Step 1: Scan and Fetch Info (Peek)
     const handleScan = async (detectedCodes) => {
         if (loading || !detectedCodes.length) return;
-        
+
         const rawValue = detectedCodes[0].rawValue;
         if (!rawValue) return;
 
         setLoading(true); // Pause Scanner
-        
+
         try {
             const token = localStorage.getItem('token');
             // Call the new "Peek" endpoint
-            const res = await axios.post('https://smart-meal-system.onrender.com/api/qr/scan-info', 
+            const res = await axios.post('https://smart-meal-system.onrender.com/api/qr/scan-info',
                 { qrToken: rawValue },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -53,11 +53,11 @@ const ScannerPage = () => {
     const confirmMeal = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.post('https://smart-meal-system.onrender.com/api/qr/validate', 
+            const res = await axios.post('https://smart-meal-system.onrender.com/api/qr/validate',
                 { qrToken: scannedUser.token },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            
+
             alert(res.data.msg); // "Meal Served!"
             setScannedUser(null);
             setLoading(false); // Restart Scanner
@@ -78,34 +78,34 @@ const ScannerPage = () => {
         <div style={styles.container}>
             <Navbar />
             <div style={styles.wrapper}>
-                <h1 style={styles.title}>Staff <span style={{color: 'var(--primary-red)'}}>Scanner</span></h1>
-                
+                <h1 style={styles.title}>Staff <span style={{ color: 'var(--primary-red)' }}>Scanner</span></h1>
+
                 {/* CAMERA AREA */}
                 {!scannedUser && (
                     <div style={styles.cameraBox}>
-                        <Scanner 
-                            onScan={handleScan} 
+                        <Scanner
+                            onScan={handleScan}
                             styles={{ container: { width: '100%', height: '100%' } }}
                         />
-                        <p style={{marginTop:'10px', color:'#fff'}}>Scanning active...</p>
+                        <p style={{ marginTop: '10px', color: '#fff' }}>Scanning active...</p>
                     </div>
                 )}
 
                 {/* CONFIRMATION CARD (Replaces Camera when scanned) */}
                 {scannedUser && (
                     <div style={styles.confirmCard}>
-                        <h2 style={{color:'black', marginBottom:'10px'}}>Verify Student</h2>
-                        
+                        <h2 style={{ color: 'black', marginBottom: '10px' }}>Verify Student</h2>
+
                         <div style={styles.infoRow}>
-                            <span>Name:</span> 
+                            <span>Name:</span>
                             <strong>{scannedUser.name}</strong>
                         </div>
-                        
+
                         <div style={styles.infoRow}>
-                            <span>Type:</span> 
+                            <span>Type:</span>
                             <span style={{
                                 backgroundColor: scannedUser.role === 'guest' ? '#FF9800' : '#4CAF50',
-                                color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize:'0.9rem'
+                                color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '0.9rem'
                             }}>
                                 {scannedUser.role === 'guest' ? 'GUEST USER' : 'COLLEGE STUDENT'}
                             </span>
@@ -114,13 +114,13 @@ const ScannerPage = () => {
                         {scannedUser.role === 'guest' && (
                             <div style={styles.infoRow}>
                                 <span>Meals Left:</span>
-                                <strong style={{color:'red'}}>{scannedUser.mealsLeft}</strong>
+                                <strong style={{ color: 'red' }}>{scannedUser.mealsLeft}</strong>
                             </div>
                         )}
 
                         <div style={styles.actionBox}>
-                            <p style={{marginBottom:'15px', fontWeight:'bold'}}>Serve Meal?</p>
-                            <div style={{display:'flex', gap:'10px', justifyContent:'center'}}>
+                            <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>Serve Meal?</p>
+                            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                                 <button onClick={confirmMeal} style={styles.yesBtn}>✅ YES, SERVE</button>
                                 <button onClick={cancelScan} style={styles.noBtn}>❌ NO</button>
                             </div>
